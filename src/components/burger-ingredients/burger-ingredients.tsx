@@ -17,8 +17,6 @@ import {
 } from '../../slices/ingredientsSlice';
 
 export const BurgerIngredients: FC = () => {
-  const dispatch = useAppDispatch();
-
   /** TODO: взять переменные из стора */
   const buns = useAppSelector(selectBuns);
   const mains = useAppSelector(selectMains);
@@ -40,10 +38,6 @@ export const BurgerIngredients: FC = () => {
   const [saucesRef, inViewSauces] = useInView({
     threshold: 0
   });
-
-  useEffect(() => {
-    dispatch(fetchIngredients());
-  }, []);
 
   useEffect(() => {
     if (inViewBuns) {

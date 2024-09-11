@@ -3,11 +3,13 @@ import { configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useSelector, useDispatch } from 'react-redux';
 import ingredientsReducer from '../slices/ingredientsSlice';
 import constructorReducer from '../slices/constructorSlice';
+import orderReducer from '../slices/orderSlice';
 
 const store = configureStore({
   reducer: {
     ingredients: ingredientsReducer,
-    burger: constructorReducer
+    burger: constructorReducer,
+    order: orderReducer
   },
   devTools: process.env.NODE_ENV !== 'production'
 });

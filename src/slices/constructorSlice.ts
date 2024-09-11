@@ -4,15 +4,11 @@ import { TConstructorIngredient, TIngredient, TOrder } from '@utils-types';
 type TConstructorState = {
   bun: TIngredient | null;
   ingredients: TConstructorIngredient[];
-  orderRequest: boolean;
-  orderModalData: TOrder | null;
 };
 
 const initialState: TConstructorState = {
   bun: null,
-  ingredients: [],
-  orderRequest: false,
-  orderModalData: null
+  ingredients: []
 };
 
 export const constructorSlice = createSlice({
@@ -55,28 +51,15 @@ export const constructorSlice = createSlice({
       state.ingredients = state.ingredients.filter(
         (ing) => ing._id !== action.payload
       );
-    },
-    setOrderRequest: (state, action: PayloadAction<boolean>) => {
-      state.orderRequest = action.payload;
-    },
-    setOrderModalData: (state, action: PayloadAction<TOrder>) => {
-      state.orderModalData = action.payload;
     }
   },
   selectors: {
     ingredientsSelector: (state) => state.ingredients,
-    bunSelector: (state) => state.bun,
-    orderRequestSelector: (state) => state.orderRequest,
-    orderModalDataSelector: (state) => state.orderModalData
+    bunSelector: (state) => state.bun
   }
 });
 
 export const { addIngredient, addBun, moveUp, moveDown } =
   constructorSlice.actions;
-export const {
-  ingredientsSelector,
-  bunSelector,
-  orderRequestSelector,
-  orderModalDataSelector
-} = constructorSlice.selectors;
+export const { ingredientsSelector, bunSelector } = constructorSlice.selectors;
 export default constructorSlice.reducer;

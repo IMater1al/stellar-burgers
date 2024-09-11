@@ -4,10 +4,12 @@ import { BurgerConstructorUI } from '@ui';
 import { useAppSelector } from '../../services/store';
 import {
   bunSelector,
-  ingredientsSelector,
+  ingredientsSelector
+} from '../../slices/constructorSlice';
+import {
   orderModalDataSelector,
   orderRequestSelector
-} from '../../slices/constructorSlice';
+} from '../../slices/orderSlice';
 
 export const BurgerConstructor: FC = () => {
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */

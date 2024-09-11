@@ -41,13 +41,15 @@ export const ingredientsSlice = createSlice({
       (state: TIngredientsState) => state.data,
       (data) => data.filter((ing) => ing.type === 'sauce')
     ),
+    selectIngredient: createSelector(
+      [
+        (state: TIngredientsState) => state.data,
+        (state: TIngredientsState, id: string) => id
+      ],
+      (data, id) => data.find((ing) => ing._id === id)
+    ),
+
     selectIsLoading: (state) => state.isLoading
-    // selectBuns: (state) => {
-    //   console.log(123);
-    //   return state.data.filter((ing) => ing.type === 'bun');
-    // },
-    // selectMains: (state) => state.data.filter((ing) => ing.type === 'main'),
-    // selectSauces: (state) => state.data.filter((ing) => ing.type === 'sauce')
   },
   extraReducers(builder) {
     builder
@@ -66,5 +68,10 @@ export const ingredientsSlice = createSlice({
 });
 
 export default ingredientsSlice.reducer;
-export const { selectSauces, selectBuns, selectMains, selectIsLoading } =
-  ingredientsSlice.selectors;
+export const {
+  selectSauces,
+  selectBuns,
+  selectMains,
+  selectIsLoading,
+  selectIngredient
+} = ingredientsSlice.selectors;
