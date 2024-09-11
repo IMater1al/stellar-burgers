@@ -11,6 +11,7 @@ import {
 import {
   fetchIngredients,
   selectBuns,
+  selectIsLoading,
   selectMains,
   selectSauces
 } from '../../slices/ingredientsSlice';
