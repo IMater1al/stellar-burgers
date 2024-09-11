@@ -1,9 +1,9 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit';
 import { TConstructorIngredient, TIngredient, TOrder } from '@utils-types';
 
 type TConstructorState = {
   bun: TIngredient | null;
-  ingredients: TIngredient[];
+  ingredients: TConstructorIngredient[];
   orderRequest: boolean;
   orderModalData: TOrder | null;
 };
@@ -21,7 +21,7 @@ export const constructorSlice = createSlice({
   reducers: {
     moveUp: (state, action: PayloadAction<string>) => {
       const payloadIndex = state.ingredients.findIndex(
-        (ing) => ing._id === action.payload
+        (ing) => ing.id === action.payload
       );
 
       [state.ingredients[payloadIndex - 1], state.ingredients[payloadIndex]] = [
@@ -31,7 +31,7 @@ export const constructorSlice = createSlice({
     },
     moveDown: (state, action: PayloadAction<string>) => {
       const payloadIndex = state.ingredients.findIndex(
-        (ing) => ing._id === action.payload
+        (ing) => ing.id === action.payload
       );
 
       [state.ingredients[payloadIndex], state.ingredients[payloadIndex + 1]] = [
@@ -42,16 +42,19 @@ export const constructorSlice = createSlice({
     addBun: (state, action: PayloadAction<TIngredient>) => {
       state.bun = action.payload;
     },
-    addIngredient: (state, action: PayloadAction<TIngredient>) => {
-      state.ingredients.push(action.payload);
+    addIngredient: {
+      reducer: (state, action: PayloadAction<TConstructorIngredient>) => {
+        state.ingredients.push(action.payload);
+      },
+      prepare: (ingredient: TIngredient) => {
+        const key = nanoid();
+        return { payload: { ...ingredient, id: key } };
+      }
     },
     removeIngredient: (state, action: PayloadAction<string>) => {
       state.ingredients = state.ingredients.filter(
         (ing) => ing._id !== action.payload
       );
-    },
-    setBun: (state, action: PayloadAction<TIngredient>) => {
-      state.bun = action.payload;
     },
     setOrderRequest: (state, action: PayloadAction<boolean>) => {
       state.orderRequest = action.payload;
