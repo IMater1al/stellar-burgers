@@ -42,13 +42,11 @@ export const ingredientsSlice = createSlice({
       (data) => data.filter((ing) => ing.type === 'sauce')
     ),
     selectIngredient: createSelector(
-      [
-        (state: TIngredientsState) => state.data,
-        (state: TIngredientsState, id: string) => id
-      ],
+      (state: TIngredientsState) => state.data,
+      (state: TIngredientsState, id: string) => id,
       (data, id) => data.find((ing) => ing._id === id)
     ),
-
+    selectAllIngredients: (state) => state.data,
     selectIsLoading: (state) => state.isLoading
   },
   extraReducers(builder) {
@@ -73,5 +71,6 @@ export const {
   selectBuns,
   selectMains,
   selectIsLoading,
-  selectIngredient
+  selectIngredient,
+  selectAllIngredients
 } = ingredientsSlice.selectors;

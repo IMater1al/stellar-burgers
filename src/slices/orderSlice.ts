@@ -1,5 +1,5 @@
 import { getFeedsApi } from '@api';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
 import { createAppAsyncThunk } from '../utils/createAppAsyncThunk';
 
@@ -34,6 +34,9 @@ export const orderSlice = createSlice({
   name: 'order',
   initialState,
   reducers: {
+    clearOrders: (state) => {
+      state.orders = [];
+    },
     setOrderRequest: (state, action: PayloadAction<boolean>) => {
       state.orderRequest = action.payload;
     },
@@ -42,6 +45,14 @@ export const orderSlice = createSlice({
     }
   },
   selectors: {
+    orderDataSelector: createSelector(
+      [
+        (state: TOrderState) => state.orders,
+        (state: TOrderState, number: string) => number
+      ],
+      (orders, orderNumber) =>
+        orders.find((order) => order.number === Number(orderNumber))
+    ),
     orderRequestSelector: (state) => state.orderRequest,
     orderModalDataSelector: (state) => state.orderModalData,
     ordersSelector: (state) => state.orders,
@@ -65,11 +76,12 @@ export const orderSlice = createSlice({
   }
 });
 
-export const {} = orderSlice.actions;
+export const { clearOrders } = orderSlice.actions;
 export const {
   orderRequestSelector,
   orderModalDataSelector,
   ordersSelector,
-  feedSelector
+  feedSelector,
+  orderDataSelector
 } = orderSlice.selectors;
 export default orderSlice.reducer;

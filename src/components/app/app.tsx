@@ -12,7 +12,7 @@ import '../../index.css';
 import styles from './app.module.css';
 
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import { ProtectedRoute } from '../protected-route/protected-route';
 import { useEffect } from 'react';
 import { useAppDispatch } from '../../services/store';
@@ -20,9 +20,10 @@ import { fetchIngredients } from '../../slices/ingredientsSlice';
 
 const App = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const onClose = () => {
-    console.log(123);
+    navigate(-1);
   };
 
   useEffect(() => {
@@ -44,8 +45,16 @@ const App = () => {
             }
           />
         </Route>
-        <Route path='/feed' element={<Feed />}>
-          <Route path=':number' element={<OrderInfo />} />
+        <Route path='/feed'>
+          <Route index element={<Feed />} />
+          <Route
+            path=':number'
+            element={
+              <Modal title='Информация о заказе' onClose={onClose}>
+                <OrderInfo />
+              </Modal>
+            }
+          />
         </Route>
         <Route
           path='/login'
