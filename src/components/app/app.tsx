@@ -32,30 +32,65 @@ const App = () => {
 
   return (
     <div className={styles.app}>
-      <AppHeader />
       <Routes>
-        <Route path='/' element={<ConstructorPage />} />
-        <Route path='/ingredients'>
-          <Route
-            path=':id'
-            element={
-              <Modal title='Окно ингредиента' onClose={onClose}>
-                <IngredientDetails />
-              </Modal>
-            }
-          />
+        <Route path='/' element={<AppHeader />}>
+          <Route index element={<ConstructorPage />} />
+
+          <Route path='/feed'>
+            <Route index element={<Feed />} />
+            <Route
+              path=':number'
+              element={
+                <Modal title='Информация о заказе' onClose={onClose}>
+                  <OrderInfo />
+                </Modal>
+              }
+            />
+          </Route>
+
+          <Route path='/ingredients'>
+            <Route
+              path=':id'
+              element={
+                <Modal title='Окно ингредиента' onClose={onClose}>
+                  <IngredientDetails />
+                </Modal>
+              }
+            />
+          </Route>
+
+          <Route path='/profile'>
+            <Route
+              index
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route path='orders'>
+              <Route
+                index
+                element={
+                  <ProtectedRoute>
+                    <ProfileOrders />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path=':number'
+                element={
+                  <ProtectedRoute>
+                    <OrderInfo />
+                  </ProtectedRoute>
+                }
+              />
+            </Route>
+          </Route>
         </Route>
-        <Route path='/feed'>
-          <Route index element={<Feed />} />
-          <Route
-            path=':number'
-            element={
-              <Modal title='Информация о заказе' onClose={onClose}>
-                <OrderInfo />
-              </Modal>
-            }
-          />
-        </Route>
+
         <Route
           path='/login'
           element={
@@ -64,6 +99,7 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+
         <Route
           path='/forgot-password'
           element={
@@ -72,6 +108,7 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+
         <Route
           path='/reset-password'
           element={
@@ -80,34 +117,7 @@ const App = () => {
             </ProtectedRoute>
           }
         />
-        <Route path='/profile'>
-          <Route
-            index
-            element={
-              <ProtectedRoute>
-                <Profile />
-              </ProtectedRoute>
-            }
-          />
-          <Route path='orders'>
-            <Route
-              index
-              element={
-                <ProtectedRoute>
-                  <ProfileOrders />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path=':number'
-              element={
-                <ProtectedRoute>
-                  <OrderInfo />
-                </ProtectedRoute>
-              }
-            />
-          </Route>
-        </Route>
+
         <Route path='*' element={<NotFound404 />} />
       </Routes>
     </div>
