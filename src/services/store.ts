@@ -4,12 +4,14 @@ import { TypedUseSelectorHook, useSelector, useDispatch } from 'react-redux';
 import ingredientsReducer from '../slices/ingredientsSlice';
 import constructorReducer from '../slices/constructorSlice';
 import orderReducer from '../slices/orderSlice';
+import userReducer from '../slices/userSlice';
 
 const store = configureStore({
   reducer: {
     ingredients: ingredientsReducer,
     burger: constructorReducer,
-    order: orderReducer
+    order: orderReducer,
+    user: userReducer
   },
   devTools: process.env.NODE_ENV !== 'production'
 });
