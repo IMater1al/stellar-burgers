@@ -37,7 +37,7 @@ const App = () => {
         <Route path='/' element={<AppHeader />}>
           <Route index element={<ConstructorPage />} />
 
-          <Route path='/feed'>
+          <Route path='feed'>
             <Route index element={<Feed />} />
             <Route
               path=':number'
@@ -49,7 +49,7 @@ const App = () => {
             />
           </Route>
 
-          <Route path='/ingredients'>
+          <Route path='ingredients'>
             <Route
               path=':id'
               element={
@@ -60,11 +60,11 @@ const App = () => {
             />
           </Route>
 
-          <Route path='/profile'>
+          <Route path='profile'>
             <Route
               index
               element={
-                <ProtectedRoute onlyUnAuth>
+                <ProtectedRoute>
                   <Profile />
                 </ProtectedRoute>
               }
@@ -83,9 +83,9 @@ const App = () => {
               <Route
                 path=':number'
                 element={
-                  <ProtectedRoute>
+                  <Modal title='Информация о заказе' onClose={onClose}>
                     <OrderInfo />
-                  </ProtectedRoute>
+                  </Modal>
                 }
               />
             </Route>
@@ -95,7 +95,7 @@ const App = () => {
         <Route
           path='/login'
           element={
-            <ProtectedRoute>
+            <ProtectedRoute onlyUnAuth>
               <Login />
             </ProtectedRoute>
           }

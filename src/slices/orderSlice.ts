@@ -1,15 +1,31 @@
-import { getFeedsApi } from '@api';
-import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { getFeedsApi, getOrderByNumberApi, getOrdersApi } from '@api';
+import {
+  createAsyncThunk,
+  createSelector,
+  createSlice,
+  PayloadAction
+} from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
 import { createAppAsyncThunk } from '../utils/createAppAsyncThunk';
 
-export const fetchFeeds = createAppAsyncThunk(
+export const fetchFeeds = createAsyncThunk(
   'feeds/getAll',
   async () => await getFeedsApi()
 );
 
+export const fetchGetUserOrders = createAsyncThunk(
+  'user/getOrders',
+  async () => await getOrdersApi()
+);
+
+export const fetchGetOrderByNumberApi = createAsyncThunk(
+  'user/getOrderByNumber',
+  async (number: string) => await getOrderByNumberApi(Number(number))
+);
+
 type TOrderState = {
   orders: TOrder[];
+  userOrders: TOrder[];
   feed: {
     total: number;
     totalToday: number;
@@ -21,6 +37,7 @@ type TOrderState = {
 
 const initialState: TOrderState = {
   orders: [],
+  userOrders: [],
   feed: {
     total: 0,
     totalToday: 0
@@ -40,23 +57,16 @@ export const orderSlice = createSlice({
     setOrderRequest: (state, action: PayloadAction<boolean>) => {
       state.orderRequest = action.payload;
     },
-    setOrderModalData: (state, action: PayloadAction<TOrder>) => {
-      state.orderModalData = action.payload;
+    clearModalData: (state) => {
+      state.orderModalData = null;
     }
   },
   selectors: {
-    orderDataSelector: createSelector(
-      [
-        (state: TOrderState) => state.orders,
-        (state: TOrderState, number: string) => number
-      ],
-      (orders, orderNumber) =>
-        orders.find((order) => order.number === Number(orderNumber))
-    ),
     orderRequestSelector: (state) => state.orderRequest,
     orderModalDataSelector: (state) => state.orderModalData,
     ordersSelector: (state) => state.orders,
-    feedSelector: (state) => state.feed
+    feedSelector: (state) => state.feed,
+    userOrdersSelector: (state) => state.userOrders
   },
   extraReducers(builder) {
     builder
@@ -71,17 +81,37 @@ export const orderSlice = createSlice({
       })
       .addCase(fetchFeeds.rejected, (state, action) => {
         state.orderRequest = false;
-        state.error = action.payload?.message || '';
+        state.error = action.error.message || '';
+      })
+      .addCase(fetchGetUserOrders.pending, (state) => {
+        state.orderRequest = true;
+      })
+      .addCase(fetchGetUserOrders.fulfilled, (state, action) => {
+        state.orderRequest = false;
+        state.userOrders = action.payload;
+      })
+      .addCase(fetchGetUserOrders.rejected, (state, action) => {
+        state.orderRequest = false;
+      })
+      .addCase(fetchGetOrderByNumberApi.pending, (state) => {
+        state.orderRequest = true;
+      })
+      .addCase(fetchGetOrderByNumberApi.fulfilled, (state, action) => {
+        state.orderRequest = false;
+        state.orderModalData = action.payload.orders[0];
+      })
+      .addCase(fetchGetOrderByNumberApi.rejected, (state, action) => {
+        state.orderRequest = false;
       });
   }
 });
 
-export const { clearOrders } = orderSlice.actions;
+export const { clearOrders, clearModalData } = orderSlice.actions;
 export const {
   orderRequestSelector,
   orderModalDataSelector,
   ordersSelector,
   feedSelector,
-  orderDataSelector
+  userOrdersSelector
 } = orderSlice.selectors;
 export default orderSlice.reducer;

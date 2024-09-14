@@ -1,16 +1,19 @@
 import {
   getFeedsApi,
+  getOrdersApi,
   getUserApi,
   loginUserApi,
+  logoutApi,
   registerUserApi,
   TLoginData,
   TRegisterData,
   updateUserApi
 } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { TUser } from '@utils-types';
+import { TOrder, TUser } from '@utils-types';
 import { createAppAsyncThunk } from '../utils/createAppAsyncThunk';
-import { setCookie } from '../utils/cookie';
+import { deleteCookie, setCookie } from '../utils/cookie';
+import { stat } from 'fs';
 
 export const fetchRegisterUser = createAsyncThunk(
   'user/register',
@@ -22,12 +25,18 @@ export const fetchRegisterUser = createAsyncThunk(
   }
 );
 
+export const fetchLogout = createAsyncThunk('user/logout', async () => {
+  await logoutApi();
+  localStorage.removeItem('refreshToken');
+  deleteCookie('accessToken');
+});
+
 export const fetchGetUser = createAsyncThunk(
   'user/getUser',
   async () => await getUserApi()
 );
 
-export const fetchLoginUser = createAppAsyncThunk(
+export const fetchLoginUser = createAsyncThunk(
   'user/login',
   async (data: TLoginData) => {
     const resp = await loginUserApi(data);
@@ -37,13 +46,14 @@ export const fetchLoginUser = createAppAsyncThunk(
   }
 );
 
-export const fetchUpdateUser = createAppAsyncThunk(
+export const fetchUpdateUser = createAsyncThunk(
   'user/update',
   async (data: Partial<TRegisterData>) => await updateUserApi(data)
 );
 
 type TUserState = {
   user: TUser;
+  userOrders: TOrder[];
   isLoading: boolean;
   error: string;
 };
@@ -53,6 +63,7 @@ const initialState: TUserState = {
     email: '',
     name: ''
   },
+  userOrders: [],
   isLoading: false,
   error: ''
 };
@@ -112,7 +123,21 @@ export const userSlice = createSlice({
       })
       .addCase(fetchUpdateUser.rejected, (state, action) => {
         state.isLoading = false;
+      })
+      //--------------
+      .addCase(fetchLogout.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchLogout.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = '';
+        state.user.email = '';
+        state.user.name = '';
+      })
+      .addCase(fetchLogout.rejected, (state, action) => {
+        state.isLoading = false;
       });
+    //----------------------
   }
 });
 

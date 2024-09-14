@@ -4,7 +4,12 @@ import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient, TOrder } from '@utils-types';
 import { useAppDispatch, useAppSelector } from '../../services/store';
 import { selectAllIngredients } from '../../slices/ingredientsSlice';
-import { fetchFeeds, orderDataSelector } from '../../slices/orderSlice';
+import {
+  clearModalData,
+  fetchFeeds,
+  fetchGetOrderByNumberApi,
+  orderModalDataSelector
+} from '../../slices/orderSlice';
 import { useParams } from 'react-router-dom';
 
 export const OrderInfo: FC = () => {
@@ -12,14 +17,18 @@ export const OrderInfo: FC = () => {
   const dispatch = useAppDispatch();
 
   const { number } = useParams<string>();
-  const orderData = number
-    ? useAppSelector((state) => orderDataSelector(state, number))
-    : null;
+  const orderData = number ? useAppSelector(orderModalDataSelector) : null;
 
   const ingredients: TIngredient[] = useAppSelector(selectAllIngredients);
 
   useEffect(() => {
     dispatch(fetchFeeds());
+    if (number) {
+      dispatch(fetchGetOrderByNumberApi(number));
+    }
+    return () => {
+      dispatch(clearModalData());
+    };
   }, []);
 
   /* Готовим данные для отображения */

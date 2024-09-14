@@ -20,11 +20,11 @@ export const ProtectedRoute: FC<ProtectedRouteProps> = ({
     return <Preloader />;
   }
 
-  if (!user.name && onlyUnAuth) {
+  if (!user.name && !onlyUnAuth) {
     return <Navigate replace to='/login' />;
   }
 
-  if (!onlyUnAuth && user.name) {
+  if (onlyUnAuth && user.name) {
     return <Navigate replace to='/' />;
   }
 

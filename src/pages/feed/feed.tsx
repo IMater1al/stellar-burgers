@@ -8,6 +8,7 @@ import {
   fetchFeeds,
   ordersSelector
 } from '../../slices/orderSlice';
+import { fetchIngredients } from '../../slices/ingredientsSlice';
 
 export const Feed: FC = () => {
   /** TODO: взять переменную из стора */
@@ -16,6 +17,7 @@ export const Feed: FC = () => {
 
   useEffect(() => {
     dispatch(fetchFeeds());
+    dispatch(fetchIngredients());
   }, []);
 
   if (!orders.length) {
