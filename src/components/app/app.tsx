@@ -6,6 +6,7 @@ import {
   NotFound404,
   Profile,
   ProfileOrders,
+  Register,
   ResetPassword
 } from '@pages';
 import '../../index.css';
@@ -16,19 +17,19 @@ import { Route, Routes, useNavigate } from 'react-router-dom';
 import { ProtectedRoute } from '../protected-route/protected-route';
 import { useEffect } from 'react';
 import { useAppDispatch } from '../../services/store';
-import { fetchIngredients } from '../../slices/ingredientsSlice';
+import { fetchGetUser } from '../../slices/userSlice';
 
 const App = () => {
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchGetUser());
+  }, []);
 
   const onClose = () => {
     navigate(-1);
   };
-
-  useEffect(() => {
-    dispatch(fetchIngredients());
-  }, []);
 
   return (
     <div className={styles.app}>
@@ -63,7 +64,7 @@ const App = () => {
             <Route
               index
               element={
-                <ProtectedRoute>
+                <ProtectedRoute onlyUnAuth>
                   <Profile />
                 </ProtectedRoute>
               }
@@ -114,6 +115,15 @@ const App = () => {
           element={
             <ProtectedRoute>
               <ResetPassword />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path='/register'
+          element={
+            <ProtectedRoute>
+              <Register />
             </ProtectedRoute>
           }
         />

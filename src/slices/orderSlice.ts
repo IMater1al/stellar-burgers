@@ -71,7 +71,7 @@ export const orderSlice = createSlice({
       })
       .addCase(fetchFeeds.rejected, (state, action) => {
         state.orderRequest = false;
-        state.error = action.payload ? action.payload.message : '';
+        state.error = action.payload?.message || '';
       });
   }
 });
