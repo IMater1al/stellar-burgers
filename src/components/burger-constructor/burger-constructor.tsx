@@ -4,9 +4,11 @@ import { BurgerConstructorUI } from '@ui';
 import { useAppDispatch, useAppSelector } from '../../services/store';
 import {
   bunSelector,
+  clearBurgerConstructor,
   ingredientsSelector
 } from '../../slices/constructorSlice';
 import {
+  clearModalData,
   fetchOrderBurger,
   orderModalDataSelector,
   orderRequestSelector
@@ -41,7 +43,8 @@ export const BurgerConstructor: FC = () => {
   };
 
   const closeOrderModal = () => {
-    navigate('/feed');
+    dispatch(clearModalData());
+    dispatch(clearBurgerConstructor());
   };
 
   const price = useMemo(

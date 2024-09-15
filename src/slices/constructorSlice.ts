@@ -21,6 +21,9 @@ export const constructorSlice = createSlice({
   name: 'burger',
   initialState,
   reducers: {
+    clearBurgerConstructor: (state) => {
+      (state.bun = null), (state.ingredients = []);
+    },
     moveUp: (state, action: PayloadAction<string>) => {
       const payloadIndex = state.ingredients.findIndex(
         (ing) => ing.id === action.payload
@@ -65,7 +68,12 @@ export const constructorSlice = createSlice({
   }
 });
 
-export const { addIngredient, addBun, moveUp, moveDown } =
-  constructorSlice.actions;
+export const {
+  addIngredient,
+  addBun,
+  moveUp,
+  moveDown,
+  clearBurgerConstructor
+} = constructorSlice.actions;
 export const { ingredientsSelector, bunSelector } = constructorSlice.selectors;
 export default constructorSlice.reducer;
