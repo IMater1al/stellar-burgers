@@ -112,6 +112,10 @@ export const userSlice = createSlice({
       })
       .addCase(fetchGetUser.rejected, (state, action) => {
         state.isLoading = false;
+        state.user = {
+          email: '',
+          name: ''
+        };
       })
       .addCase(fetchUpdateUser.pending, (state) => {
         state.isLoading = true;

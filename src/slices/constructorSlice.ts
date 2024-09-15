@@ -21,6 +21,11 @@ export const constructorSlice = createSlice({
   name: 'burger',
   initialState,
   reducers: {
+    deleteIngredient: (state, action: PayloadAction<string>) => {
+      state.ingredients = state.ingredients.filter(
+        (ing) => ing.id !== action.payload
+      );
+    },
     clearBurgerConstructor: (state) => {
       (state.bun = null), (state.ingredients = []);
     },
@@ -73,7 +78,8 @@ export const {
   addBun,
   moveUp,
   moveDown,
-  clearBurgerConstructor
+  clearBurgerConstructor,
+  deleteIngredient
 } = constructorSlice.actions;
 export const { ingredientsSelector, bunSelector } = constructorSlice.selectors;
 export default constructorSlice.reducer;
