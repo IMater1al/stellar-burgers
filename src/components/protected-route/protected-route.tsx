@@ -1,31 +1,29 @@
 import { Preloader } from '@ui';
 import { FC, ReactNode } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { useAppSelector } from '../../services/store';
 import { isLoadingSelector, userSelector } from '../../slices/userSlice';
 
 interface ProtectedRouteProps {
   children: ReactNode;
-  onlyUnAuth?: boolean;
+  anonymous?: boolean;
 }
 
 export const ProtectedRoute: FC<ProtectedRouteProps> = ({
   children,
-  onlyUnAuth
+  anonymous = false
 }) => {
-  const isLoading = useAppSelector(isLoadingSelector);
-  const user = useAppSelector(userSelector);
+  const isLoggedIn = useAppSelector((store) => store.user.isLoggedIn);
 
-  if (isLoading) {
-    return <Preloader />;
+  const location = useLocation();
+  const from = location.state?.from || '/';
+
+  if (anonymous && isLoggedIn) {
+    return <Navigate to={from} />;
   }
 
-  if (!user.name && !onlyUnAuth) {
-    return <Navigate replace to='/login' />;
-  }
-
-  if (onlyUnAuth && user.name) {
-    return <Navigate replace to='/' />;
+  if (!anonymous && !isLoggedIn) {
+    return <Navigate to='/login' state={{ from: location }} />;
   }
 
   return children;

@@ -55,6 +55,7 @@ type TUserState = {
   user: TUser;
   userOrders: TOrder[];
   isLoading: boolean;
+  isLoggedIn: boolean;
   error: string;
 };
 
@@ -65,6 +66,7 @@ const initialState: TUserState = {
   },
   userOrders: [],
   isLoading: false,
+  isLoggedIn: false,
   error: ''
 };
 
@@ -81,37 +83,46 @@ export const userSlice = createSlice({
     builder
       .addCase(fetchRegisterUser.pending, (state) => {
         state.isLoading = true;
+        state.isLoggedIn = false;
       })
       .addCase(fetchRegisterUser.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.isLoggedIn = true;
         state.user = action.payload.user;
       })
       .addCase(fetchRegisterUser.rejected, (state, action) => {
         state.isLoading = false;
+        state.isLoggedIn = false;
         state.error = action.error.message || '';
       })
       .addCase(fetchLoginUser.pending, (state) => {
         state.isLoading = true;
+        state.isLoggedIn = false;
       })
       .addCase(fetchLoginUser.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.isLoggedIn = true;
         state.error = '';
         state.user = action.payload.user;
       })
       .addCase(fetchLoginUser.rejected, (state, action) => {
         state.isLoading = false;
+        state.isLoggedIn = false;
         state.error = action.error.message || '';
       })
       .addCase(fetchGetUser.pending, (state) => {
         state.isLoading = true;
+        state.isLoggedIn = false;
       })
       .addCase(fetchGetUser.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.isLoggedIn = true;
         state.error = '';
         state.user = action.payload.user;
       })
       .addCase(fetchGetUser.rejected, (state, action) => {
         state.isLoading = false;
+        state.isLoggedIn = false;
         state.user = {
           email: '',
           name: ''
@@ -134,6 +145,7 @@ export const userSlice = createSlice({
       })
       .addCase(fetchLogout.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.isLoggedIn = false;
         state.error = '';
         state.user.email = '';
         state.user.name = '';
