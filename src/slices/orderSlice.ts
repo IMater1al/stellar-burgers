@@ -1,4 +1,9 @@
-import { getFeedsApi, getOrderByNumberApi, getOrdersApi } from '@api';
+import {
+  getFeedsApi,
+  getOrderByNumberApi,
+  getOrdersApi,
+  orderBurgerApi
+} from '@api';
 import {
   createAsyncThunk,
   createSelector,
@@ -21,6 +26,11 @@ export const fetchGetUserOrders = createAsyncThunk(
 export const fetchGetOrderByNumberApi = createAsyncThunk(
   'user/getOrderByNumber',
   async (number: string) => await getOrderByNumberApi(Number(number))
+);
+
+export const fetchOrderBurger = createAsyncThunk(
+  'user/orderBurger',
+  async (data: string[]) => await orderBurgerApi(data)
 );
 
 type TOrderState = {
@@ -101,6 +111,16 @@ export const orderSlice = createSlice({
         state.orderModalData = action.payload.orders[0];
       })
       .addCase(fetchGetOrderByNumberApi.rejected, (state, action) => {
+        state.orderRequest = false;
+      })
+      .addCase(fetchOrderBurger.pending, (state) => {
+        state.orderRequest = true;
+      })
+      .addCase(fetchOrderBurger.fulfilled, (state, action) => {
+        state.orderRequest = false;
+        state.orderModalData = action.payload.order;
+      })
+      .addCase(fetchOrderBurger.rejected, (state, action) => {
         state.orderRequest = false;
       });
   }
