@@ -1,6 +1,4 @@
 import {
-  getFeedsApi,
-  getOrdersApi,
   getUserApi,
   loginUserApi,
   logoutApi,
@@ -11,9 +9,7 @@ import {
 } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TOrder, TUser } from '@utils-types';
-import { createAppAsyncThunk } from '../utils/createAppAsyncThunk';
 import { deleteCookie, setCookie } from '../utils/cookie';
-import { stat } from 'fs';
 
 export const fetchRegisterUser = createAsyncThunk(
   'user/register',

@@ -1,7 +1,6 @@
+import { TIngredient } from '@utils-types';
 import { FC, useEffect, useMemo } from 'react';
-import { Preloader } from '../ui/preloader';
-import { OrderInfoUI } from '../ui/order-info';
-import { TIngredient, TOrder } from '@utils-types';
+import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../services/store';
 import { selectAllIngredients } from '../../slices/ingredientsSlice';
 import {
@@ -10,7 +9,8 @@ import {
   fetchGetOrderByNumberApi,
   orderModalDataSelector
 } from '../../slices/orderSlice';
-import { useParams } from 'react-router-dom';
+import { OrderInfoUI } from '../ui/order-info';
+import { Preloader } from '../ui/preloader';
 
 export const OrderInfo: FC = () => {
   /** TODO: взять переменные orderData и ingredients из стора */

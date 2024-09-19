@@ -4,14 +4,8 @@ import {
   getOrdersApi,
   orderBurgerApi
 } from '@api';
-import {
-  createAsyncThunk,
-  createSelector,
-  createSlice,
-  PayloadAction
-} from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
-import { createAppAsyncThunk } from '../utils/createAppAsyncThunk';
 
 export const fetchFeeds = createAsyncThunk(
   'feeds/getAll',

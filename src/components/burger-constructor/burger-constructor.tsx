@@ -1,6 +1,7 @@
-import { FC, useMemo } from 'react';
-import { TConstructorIngredient, TIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
+import { TConstructorIngredient } from '@utils-types';
+import { FC, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../services/store';
 import {
   bunSelector,
@@ -13,7 +14,6 @@ import {
   orderModalDataSelector,
   orderRequestSelector
 } from '../../slices/orderSlice';
-import { useNavigate } from 'react-router-dom';
 import { userSelector } from '../../slices/userSlice';
 
 export const BurgerConstructor: FC = () => {

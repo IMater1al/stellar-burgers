@@ -1,20 +1,14 @@
-import { useState, useRef, useEffect, FC } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
-import { TIngredient, TTabMode } from '@utils-types';
-import { BurgerIngredientsUI } from '../ui/burger-ingredients';
+import { TTabMode } from '@utils-types';
+import { useAppSelector } from '../../services/store';
 import {
-  RootState,
-  useAppDispatch,
-  useAppSelector
-} from '../../services/store';
-import {
-  fetchIngredients,
   selectBuns,
-  selectIsLoading,
   selectMains,
   selectSauces
 } from '../../slices/ingredientsSlice';
+import { BurgerIngredientsUI } from '../ui/burger-ingredients';
 
 export const BurgerIngredients: FC = () => {
   /** TODO: взять переменные из стора */

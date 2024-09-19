@@ -1,8 +1,6 @@
-import { Preloader } from '@ui';
 import { FC, ReactNode } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAppSelector } from '../../services/store';
-import { isLoadingSelector, userSelector } from '../../slices/userSlice';
 
 interface ProtectedRouteProps {
   children: ReactNode;
