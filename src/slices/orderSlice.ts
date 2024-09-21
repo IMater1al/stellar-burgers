@@ -39,7 +39,7 @@ type TOrderState = {
   error: string;
 };
 
-const initialState: TOrderState = {
+export const initialState: TOrderState = {
   orders: [],
   userOrders: [],
   feed: {
@@ -96,6 +96,7 @@ export const orderSlice = createSlice({
       })
       .addCase(fetchGetUserOrders.rejected, (state, action) => {
         state.orderRequest = false;
+        state.error = action.error.message || '';
       })
       .addCase(fetchGetOrderByNumberApi.pending, (state) => {
         state.orderRequest = true;
@@ -106,6 +107,7 @@ export const orderSlice = createSlice({
       })
       .addCase(fetchGetOrderByNumberApi.rejected, (state, action) => {
         state.orderRequest = false;
+        state.error = action.error.message || '';
       })
       .addCase(fetchOrderBurger.pending, (state) => {
         state.orderRequest = true;
@@ -116,6 +118,7 @@ export const orderSlice = createSlice({
       })
       .addCase(fetchOrderBurger.rejected, (state, action) => {
         state.orderRequest = false;
+        state.error = action.error.message || '';
       });
   }
 });

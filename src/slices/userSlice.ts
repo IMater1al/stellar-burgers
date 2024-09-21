@@ -55,7 +55,7 @@ type TUserState = {
   error: string;
 };
 
-const initialState: TUserState = {
+export const initialState: TUserState = {
   user: {
     email: '',
     name: ''
@@ -123,6 +123,7 @@ export const userSlice = createSlice({
           email: '',
           name: ''
         };
+        state.error = action.error.message || '';
       })
       .addCase(fetchUpdateUser.pending, (state) => {
         state.isLoading = true;
@@ -134,6 +135,7 @@ export const userSlice = createSlice({
       })
       .addCase(fetchUpdateUser.rejected, (state, action) => {
         state.isLoading = false;
+        state.error = action.error.message || '';
       })
       //--------------
       .addCase(fetchLogout.pending, (state) => {
@@ -148,6 +150,7 @@ export const userSlice = createSlice({
       })
       .addCase(fetchLogout.rejected, (state, action) => {
         state.isLoading = false;
+        state.error = action.error.message || '';
       });
     //----------------------
   }

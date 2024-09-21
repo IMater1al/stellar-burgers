@@ -1,9 +1,13 @@
 import { getIngredientsApi } from '@api';
-import { createSelector, createSlice } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSelector,
+  createSlice
+} from '@reduxjs/toolkit';
 import { TIngredient } from '@utils-types';
 import { createAppAsyncThunk } from '../utils/createAppAsyncThunk';
 
-export const fetchIngredients = createAppAsyncThunk(
+export const fetchIngredients = createAsyncThunk(
   'ingredients/getAll',
   async () => await getIngredientsApi()
 );
@@ -14,7 +18,7 @@ type TIngredientsState = {
   error: string;
 };
 
-const initialState: TIngredientsState = {
+export const initialState: TIngredientsState = {
   data: [],
   isLoading: false,
   error: ''
@@ -56,7 +60,7 @@ export const ingredientsSlice = createSlice({
       })
       .addCase(fetchIngredients.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload ? action.payload.message : '';
+        state.error = action.error.message || '';
       });
   }
 });
