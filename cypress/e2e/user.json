@@ -1,0 +1,9 @@
+{
+  "success": true,
+  "accessToken": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NWU3ODgxOGE0YjYyMDAxYzgzNzEzYiIsImlhdCI6MTcyNjM0NDY4OCwiZXhwIjoxNzI2MzQ1ODg4fQ.-bHdcOkA7vjDwlcudRofFk5aD86VCcwmwbfTU3yWHYU",
+  "refreshToken": "7a513b548c5919b3f23ca197b78f249b6a3bc06222b1efe5f76358d9334c0c5107fd8dd764cd841d",
+  "user": {
+    "email": "123123@gmail.com",
+    "name": "Ай"
+  }
+}
