@@ -1,16 +1,13 @@
 import { describe, expect, test } from '@jest/globals';
-import ingredientReducer, { fetchIngredients } from './ingredientsSlice';
+import ingredientReducer, {
+  fetchIngredients,
+  initialState
+} from './ingredientsSlice';
 import { configureStore } from '@reduxjs/toolkit';
 
 beforeEach(() => {
   jest.clearAllMocks();
 });
-
-const initialState = {
-  data: [],
-  isLoading: false,
-  error: ''
-};
 
 const expectedResult = [
   {
@@ -65,7 +62,7 @@ describe('тест слайса ингридиентов', () => {
   });
 
   test('тест получения данных ', async () => {
-    const mokedFetch = jest.spyOn(global, 'fetch').mockImplementation(
+    jest.spyOn(global, 'fetch').mockImplementation(
       jest.fn(() =>
         Promise.resolve({
           ok: true,

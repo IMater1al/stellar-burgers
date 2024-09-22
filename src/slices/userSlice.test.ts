@@ -4,39 +4,20 @@ import userSliceReducer, {
   fetchLoginUser,
   fetchLogout,
   fetchRegisterUser,
-  fetchUpdateUser
+  fetchUpdateUser,
+  initialState
 } from './userSlice';
 
 beforeEach(() => {
   jest.clearAllMocks();
 });
 
-export const initialState = {
-  user: {
-    email: '',
-    name: ''
-  },
-  userOrders: [],
-  isLoading: false,
-  isLoggedIn: false,
-  error: ''
-};
-
-const registerData = {
-  name: '123',
-  password: '123',
-  email: 'asd@mail.ru'
-};
-
-const initialUser = {
-  email: '',
-  name: ''
-};
-
 const loginData = {
   password: '123',
   email: 'asd@mail.ru'
 };
+
+const registerData = { ...loginData, name: '123' };
 
 const expectedUserResponse = {
   success: true,
@@ -103,7 +84,7 @@ describe('тест слайса пользователя', () => {
     );
     expect(state.isLoading).toBeFalsy();
     expect(state.isLoggedIn).toBeFalsy();
-    expect(state.user).toEqual(initialUser);
+    expect(state.user).toEqual(initialState.user);
   });
 
   test('тест вызова fetchUpdateUser Request ', () => {
